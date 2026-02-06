@@ -1,0 +1,404 @@
+/**
+ * Terminal-Style Security Research Interface
+ * 
+ * Design Philosophy:
+ * - Black background with green primary text (classic terminal aesthetic)
+ * - Red for errors and warnings only
+ * - Monospace font for technical clarity
+ * - Clear visual hierarchy without clutter
+ * - High contrast for extended research sessions
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --text-primary: #00ff00;
+  --text-secondary: #00cc00;
+  --text-error: #ff0000;
+  --text-warning: #ffaa00;
+  --text-info: #00ffff;
+  --border-color: #003300;
+  --indicator-active: #00ff00;
+  --indicator-inactive: #333333;
+}
+
+body {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  height: 100vh;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--bg-primary);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HEADER SECTION
+   ═══════════════════════════════════════════════════════════ */
+
+.header {
+  background: var(--bg-secondary);
+  border-bottom: 2px solid var(--border-color);
+  padding: 12px 16px;
+}
+
+.logo {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+  text-shadow: 0 0 10px var(--text-primary);
+}
+
+.bracket {
+  color: var(--text-info);
+}
+
+.sr {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.target-url-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.target-url-section label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+#targetUrl {
+  flex: 1;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 6px 10px;
+  font-family: inherit;
+  font-size: 11px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+#targetUrl:focus {
+  border-color: var(--text-primary);
+  box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+}
+
+#targetUrl::placeholder {
+  color: #004400;
+}
+
+.btn-validate {
+  background: var(--bg-primary);
+  border: 1px solid var(--text-secondary);
+  color: var(--text-secondary);
+  padding: 6px 14px;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-validate:hover {
+  background: var(--text-secondary);
+  color: var(--bg-primary);
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.4);
+}
+
+.btn-validate:active {
+  transform: scale(0.98);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   STATUS INDICATORS BAR
+   ═══════════════════════════════════════════════════════════ */
+
+.status-bar {
+  display: flex;
+  gap: 20px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 8px 16px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.indicator-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  transition: all 0.3s;
+}
+
+.indicator-dot.inactive {
+  background: var(--indicator-inactive);
+  box-shadow: none;
+}
+
+.indicator-dot.active {
+  background: var(--indicator-active);
+  box-shadow: 0 0 8px var(--indicator-active);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.status-text {
+  color: var(--text-secondary);
+}
+
+.status-item.active .status-text {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TERMINAL OUTPUT AREA
+   ═══════════════════════════════════════════════════════════ */
+
+.terminal {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--bg-primary);
+  padding: 16px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.terminal::-webkit-scrollbar {
+  width: 10px;
+}
+
+.terminal::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+.terminal::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 5px;
+}
+
+.terminal::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+.output {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.welcome {
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  border-left: 3px solid var(--text-primary);
+  padding-left: 10px;
+}
+
+.command-entry {
+  margin-bottom: 16px;
+  border-left: 3px solid var(--border-color);
+  padding-left: 10px;
+}
+
+.command-line {
+  color: var(--text-info);
+  margin-bottom: 8px;
+}
+
+.command-result {
+  color: var(--text-primary);
+  margin-left: 10px;
+}
+
+.command-result.error {
+  color: var(--text-error);
+  border-left: 2px solid var(--text-error);
+  padding-left: 8px;
+}
+
+.command-result.warning {
+  color: var(--text-warning);
+  border-left: 2px solid var(--text-warning);
+  padding-left: 8px;
+}
+
+.command-result.success {
+  color: var(--text-primary);
+}
+
+.separator {
+  border-top: 1px solid var(--border-color);
+  margin: 12px 0;
+  opacity: 0.5;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   COMMAND INPUT AREA
+   ═══════════════════════════════════════════════════════════ */
+
+.input-area {
+  display: flex;
+  align-items: center;
+  background: var(--bg-secondary);
+  border-top: 2px solid var(--border-color);
+  padding: 10px 16px;
+  gap: 10px;
+}
+
+.prompt {
+  color: var(--text-primary);
+  font-weight: 700;
+  white-space: nowrap;
+  text-shadow: 0 0 5px var(--text-primary);
+}
+
+.command-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 12px;
+  outline: none;
+  caret-color: var(--text-primary);
+}
+
+.command-input::selection {
+  background: var(--text-secondary);
+  color: var(--bg-primary);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════ */
+
+.json-output {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 3px;
+  overflow-x: auto;
+}
+
+.table-output {
+  border-collapse: collapse;
+  margin: 8px 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  display: block;
+}
+
+.table-output th,
+.table-output td {
+  border: 1px solid var(--border-color);
+  padding: 6px 10px;
+  text-align: left;
+}
+
+.table-output th {
+  background: var(--bg-secondary);
+  color: var(--text-info);
+  font-weight: 700;
+}
+
+.table-output td {
+  color: var(--text-primary);
+}
+
+.code-block {
+  background: var(--bg-secondary);
+  border-left: 3px solid var(--text-info);
+  padding: 10px;
+  margin: 8px 0;
+  overflow-x: auto;
+}
+
+.link-list {
+  list-style: none;
+  padding-left: 10px;
+}
+
+.link-list li {
+  margin: 4px 0;
+}
+
+.link-list a {
+  color: var(--text-info);
+  text-decoration: none;
+}
+
+.link-list a:hover {
+  text-decoration: underline;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.command-entry {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Blinking cursor effect for input */
+.command-input {
+  position: relative;
+}
+
+.command-input:focus::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 16px;
+  background: var(--text-primary);
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
