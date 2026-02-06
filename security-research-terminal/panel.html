@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security Research Terminal</title>
+  <link rel="stylesheet" href="panel.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header with Target URL Input -->
+    <div class="header">
+      <div class="logo">
+        <span class="bracket">[</span><span class="sr">SR</span><span class="bracket">]</span> 
+        Security Research Terminal
+      </div>
+      <div class="target-url-section">
+        <label for="targetUrl">Target Source URL:</label>
+        <input 
+          type="text" 
+          id="targetUrl" 
+          placeholder="https://github.com/user/repo or https://example.com"
+          spellcheck="false"
+        />
+        <button id="validateUrl" class="btn-validate">Validate</button>
+      </div>
+    </div>
+
+    <!-- Status Indicators Bar -->
+    <div class="status-bar">
+      <div class="status-item" id="snippetStatus">
+        <span class="indicator-dot inactive"></span>
+        <span class="status-text">SNIPPET EXECUTION</span>
+      </div>
+      <div class="status-item" id="domStatus">
+        <span class="indicator-dot inactive"></span>
+        <span class="status-text">DOM EDIT MODE</span>
+      </div>
+      <div class="status-item" id="scrapeStatus">
+        <span class="indicator-dot inactive"></span>
+        <span class="status-text">SCRAPING</span>
+      </div>
+    </div>
+
+    <!-- Terminal Output Area -->
+    <div class="terminal" id="terminal">
+      <div class="output" id="output">
+        <div class="welcome">
+╔═══════════════════════════════════════════════════════════════╗
+║  Security Research Terminal v1.0                              ║
+║  Ethical Bug Bounty & Developer Debugging Tool                ║
+╚═══════════════════════════════════════════════════════════════╝
+
+Type 'help' for available commands.
+All actions require explicit user initiation.
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Command Input Area -->
+    <div class="input-area">
+      <span class="prompt" id="prompt">researcher@browser:~$</span>
+      <input 
+        type="text" 
+        id="commandInput" 
+        class="command-input"
+        spellcheck="false"
+        autocomplete="off"
+      />
+    </div>
+  </div>
+
+  <script src="panel.js"></script>
+</body>
+</html>
